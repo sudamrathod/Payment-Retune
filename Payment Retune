@@ -1,0 +1,15 @@
+frappe.ui.form.on('Payment Return', {
+	refresh: function(frm) {
+        // Fetch value of company from global defaults
+        if(!frm.doc.company){
+            let company = frappe.db.get_single_value('Global Defaults', 'default_company')
+                .then(function(company) {
+                    frm.set_value('company', company);
+                });
+        }
+	},
+	before_save: function(frm){
+	    let remarks = 'Amount ' + frm.doc.currency +' '+ frm.doc.amount + ' received from ' +  frm.doc.party + ' Transaction reference no ' + frm.doc.reference_number + ' dated ' + frm.doc.reference_date;
+	    frm.set_value('remarks',remarks);
+	}
+});
